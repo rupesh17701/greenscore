@@ -2,10 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-# ------------------ PAGE ------------------
 st.set_page_config(page_title="GreenScore.ai", layout="wide")
 
-# ------------------ STYLE ------------------
 st.markdown("""
 <style>
 body {background-color:#f7f9fc;}
@@ -21,8 +19,6 @@ body {background-color:#f7f9fc;}
 .grey {color:#7f8c8d;}
 </style>
 """, unsafe_allow_html=True)
-
-# ------------------ SIDEBAR ------------------
 st.sidebar.title("🌍 GreenScore.ai")
 currency = st.sidebar.selectbox("Currency", ["₹ INR", "$ USD"])
 user_type = st.sidebar.radio("User Type", ["Home", "Hostel", "Company"])
@@ -35,11 +31,9 @@ st.sidebar.markdown("### What matters in your score")
 st.sidebar.markdown("• CO₂ per person")
 st.sidebar.markdown("• CO₂ per area")
 
-# ------------------ HEADER ------------------
 st.markdown("## 🌱 GreenScore.ai")
 st.markdown("Your **Sustainability Credit Score** for Homes, Campuses & Companies")
 
-# ------------------ ENGINE ------------------
 def green_score(co2):
     if co2 <= 2: return 95
     elif co2 <= 4: return 80
@@ -60,7 +54,6 @@ def money(score):
     elif score>=40: return -2000
     else: return -5000
 
-# ------------------ INPUT ------------------
 st.markdown("### Step 1 — Enter your data")
 
 colA, colB, colC = st.columns(3)
@@ -73,7 +66,6 @@ with colC:
 
 if st.button("Analyze my sustainability"):
 
-    # ---------------- CALCULATION ----------------
     total_co2 = units * 0.82
 
     per_person = total_co2 / people if people>0 else total_co2
@@ -85,14 +77,12 @@ if st.button("Analyze my sustainability"):
     grade = esg(score)
     cash = money(score)*rate
 
-    # ---------------- KPIs ----------------
     k1,k2,k3,k4 = st.columns(4)
     k1.metric("Total CO₂ (kg)", round(total_co2,2))
     k2.metric("CO₂ / person", round(per_person,2))
     k3.metric("CO₂ / area", round(per_area,2))
     k4.metric("Green Score", score)
 
-    # ---------------- STORY ----------------
     st.markdown("### 🌍 Your Sustainability Story")
 
     if score>=80:
@@ -104,13 +94,11 @@ if st.button("Analyze my sustainability"):
 
     st.progress(score/100)
 
-    # ---------------- MONEY ----------------
     if cash>=0:
         st.success(f"🌱 You earn {symbol}{round(cash,2)} in green incentives")
     else:
         st.error(f"🔥 You must pay {symbol}{abs(round(cash,2))} as carbon cost")
 
-    # ---------------- INSIGHTS ----------------
     st.markdown("### 🔍 Smart Insights")
 
     if per_person>5:
@@ -123,7 +111,6 @@ if st.button("Analyze my sustainability"):
     elif score<40:
         st.error("You may face higher electricity tariffs in the future.")
 
-    # ---------------- ACTIONS ----------------
     st.markdown("### 🚀 What should you do next?")
 
     a1,a2,a3 = st.columns(3)
@@ -137,7 +124,6 @@ if st.button("Analyze my sustainability"):
         st.button("📄 Download ESG Report")
         st.caption("Submit to govt / college")
 
-# ------------------ GROUP ------------------
 st.markdown("## 🏢 Step 2 — Compare Hostels or Companies")
 
 file = st.file_uploader("Upload CSV or Excel (Name, Units, People, Area)",type=["csv","xlsx"])
