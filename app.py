@@ -1,22 +1,38 @@
 import streamlit as st
 import pandas as pd
 
-# ---------------- CONFIG ----------------
-st.set_page_config(page_title="GreenScore.ai", layout="wide")
+# ---------------- PAGE ----------------
+st.set_page_config(
+    page_title="GreenScore.ai",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# ---------------- THEME ----------------
-theme = st.sidebar.selectbox("Theme", ["Dark", "Light"])
+# ---------------- THEME SWITCH ----------------
+theme = st.sidebar.radio("🌗 Theme", ["Dark", "Light"])
 
 if theme == "Dark":
     st.markdown("""
         <style>
-        .stApp { background-color:#0E1117; color:white; }
+        .stApp {
+            background-color: #0e1117;
+            color: white;
+        }
+        h1, h2, h3, h4, h5, h6, p, span, label {
+            color: white !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 else:
     st.markdown("""
         <style>
-        .stApp { background-color:white; color:black; }
+        .stApp {
+            background-color: white;
+            color: black;
+        }
+        h1, h2, h3, h4, h5, h6, p, span, label {
+            color: black !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -61,12 +77,11 @@ if mode == "Personal User":
     if st.button("Calculate"):
         co2 = units * 0.82
 
-        # Smart normalization
         final_co2 = co2
         if people > 0:
-            final_co2 = final_co2 / people
+            final_co2 /= people
         if area > 0:
-            final_co2 = final_co2 / area
+            final_co2 /= area
 
         score = green_score(final_co2)
 
@@ -115,3 +130,4 @@ if mode == "Hostel / Group Upload":
 # ---------------- FOOTER ----------------
 st.markdown("---")
 st.caption("GreenScore.ai | Sustainability meets Finance")
+
